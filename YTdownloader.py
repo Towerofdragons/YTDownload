@@ -17,7 +17,7 @@ class YTplaylist(Playlist):
         except Exception:
             print("")
             print("Something went wrong, check your internet connection")
-            print("Also make sure the link is for a playlist, and is valid!")
+            print("Also, make sure the link is for a playlist, and is valid!")
             print("")
             sys.exit(1)
 
@@ -49,11 +49,11 @@ class YTplaylist(Playlist):
         dirlist = os.listdir(current_directory)
 
         if "Stream_download"  not in dirlist: #check for a receptacle file
-            print("missing receptacle folder")
+            print("\nMissing stream receptacle folder")
             os.mkdir("Stream_download")
 
             if "Stream_download" in os.listdir(current_directory): #if receptacle absent create one
-                print("receptacle successfully created!")
+                print("Stream receptacle folder successfully created!")
 
             else: #confrm one was created
                 print("Seems like a receptacle file cannot be created") 
@@ -69,10 +69,7 @@ class YTplaylist(Playlist):
             os.mkdir(self.playlist_title)    
             print("A new playlist has been established")
 
-            #TODO 
-            #Make a new arrivals folder per playlist that is alays overwritten to onlY
-            #contain new songs in the playlist to receive on the phone
-
+            
         if "New_Arrivals" not in os.listdir(streams_dir+f"/{self.playlist_title}"):
             #print(streams_list)
             os.chdir(streams_dir+"/"+self.playlist_title)
@@ -84,12 +81,12 @@ class YTplaylist(Playlist):
         
 
     def downloader(self):
-        print("==========- OPERATING DOWNLOADER -==========")
+        print("\n==========- OPERATING DOWNLOADER -==========")
         
         choices = ["Y","N"]
 
         while True:
-            response = input(f"Commence download from {self.playlist_title}?\n >> ").upper()
+            response = input(f"Commence download from {self.playlist_title}? Y/N \n >> ").upper()
             if response in choices :
                 if response == "N":
                     print("---OPERATION CANCELED---")
@@ -166,7 +163,13 @@ class YTplaylist(Playlist):
 
                 except Exception:
                     print("Download failure")
-                    sys.exit(2)
+                    new_arrivals = os.listdir(new_arrivals_dir)
+
+                    for file in new_arrivals:
+                        src = new_arrivals_dir + f"/{file}"
+                        shutil.copy(src , playlist_dir)
+                
+                        sys.exit(2)
 
 
         #copy everything from new arrivals into playlist folder once the whole list is
@@ -192,7 +195,8 @@ def intro():
         "HELLO WORLD!\n"+
         "As it stands this only downloads audio playlists from youtube to suit its original purpose\n"+
         "More functionality can be added by you or the author whenever\n"+
-        "REMEMBER TO INSTALL THE PYTUBE module BEFORE RUNNING OR THE DOWNLOADER WILL CRASH!"        
+        "REMEMBER TO INSTALL THE PYTUBE module BEFORE RUNNING OR THE DOWNLOADER WILL CRASH!\n"+
+        "===============- STANDARD VERSION -=================="        
     )
     
 
@@ -214,12 +218,14 @@ def intro():
         print("Y or N .... come on, it's simple.")       
 
     
-    link = input("Paste your Youtube playlist link here! \n >>")
+    link = input("Paste your Youtube playlist link here! DO NOT ALTER THE LINK! \n>>")
+
+    print("Please wait. Your playlist should be listed momentarily.\n")
 
     
     PlaylistIstance = YTplaylist(link)
     
-    print(PlaylistIstance.playlist_title)
+    #print(PlaylistIstance.playlist_title)
     PlaylistIstance.downloader()
 
 #RUN PROGRAM
