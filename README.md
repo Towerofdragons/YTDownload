@@ -1,4 +1,4 @@
-# YTDownload -- Make sure you have PYTUBE installed.
+# YTDownload -- Make sure you have the PYTUBE module installed!
 
 **A youtube downloader that downloads playlists in their audio formats only, so it's better for music.**
 
